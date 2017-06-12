@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>Babcock Security Admin</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{css/bootstrap-formhelpers.min.css}" rel="stylesheet"/>
+
+    <!-- Custom Fonts -->
+    <link th:href="@{css/font-awesome.min.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{css/sb-admin.css}" rel="stylesheet"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery -->
+    <script th:src="@{js/jquery.js}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{js/bootstrap.min.js}"></script>
+    <script th:src="@{js/plugins/bootstrap-formhelpers.min.js}"></script>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <div th:include="navigation :: header-side-nav"></div>
+
+    <div id="page-wrapper">
+
+        <div id="createUserContent" class="container-fluid">
+
+            <!-- Page Heading -->
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        Create New User
+                    </h1>
+                </div>
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <div class="col-lg-5 input-div">
+
+                    <form id="createRoleForm" class="form-horizontal" role="form" action="#" th:action="@{/create-user}" th:object="${user}" method="post">
+
+                        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('payNumber')}? has-error">
+                            <label class="control-label col-sm-3" for="payNumber">Pay Number</label>
+                            <div class="col-sm-9">
+                                <input id="payNumber" class="form-control" th:field="*{payNumber}" placeholder="Enter Pay Number"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-error" th:if="${#fields.hasErrors('payNumber')}">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <strong><span id="payNumberErrorMsg" class="col-sm-9 text-danger" th:if="${#fields.hasErrors('payNumber')}" th:errors="*{payNumber}"/></strong>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('name')}? has-error">
+                            <label class="control-label col-sm-3" for="name">Name</label>
+                            <div class="col-sm-9">
+                                <input id="name" class="form-control" th:field="*{name}" placeholder="Enter Name"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-error" th:if="${#fields.hasErrors('name')}">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <strong><span id="nameErrorMsg" class="col-sm-9 text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"/></strong>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('email')}? has-error">
+                            <label class="control-label col-sm-3" for="email">Email</label>
+                            <div class="col-sm-9">
+                                <input id="email" class="form-control" th:field="*{email}" placeholder="Enter Email"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-error" th:if="${#fields.hasErrors('email')}">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <strong><span id="emailErrorMsg" class="col-sm-9 text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"/></strong>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('jobTitle')}? has-error">
+                            <label class="control-label col-sm-3" for="jobTitle">Job Title</label>
+                            <div class="col-sm-9">
+                                <input id="jobTitle" class="form-control" th:field="*{jobTitle}" placeholder="Enter Job Title"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-error" th:if="${#fields.hasErrors('jobTitle')}">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <strong><span id="jobTitleErrorMsg" class="col-sm-9 text-danger" th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}"/></strong>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('department')}? has-error">
+                            <label class="control-label col-sm-3" for="department">Department</label>
+                            <div class="col-sm-9">
+                                <input id="department" class="form-control" th:field="*{department}" placeholder="Enter Department"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-error" th:if="${#fields.hasErrors('department')}">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <strong><span id="departmentErrorMsg" class="col-sm-9 text-danger" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"/></strong>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('location')}? has-error">
+                            <label class="control-label col-sm-3" for="location">Location</label>
+                            <div class="col-sm-9">
+                                <input id="location" class="form-control" th:field="*{location}" placeholder="Enter Location"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group has-error" th:if="${#fields.hasErrors('location')}">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <strong><span id="locationErrorMsg" class="col-sm-9 text-danger" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"/></strong>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-offset-3 col-sm-4">
+                                <button id="createBtn" type="submit" class="btn btn-sm btn-success">Create</button>
+                                <button id="resetBtn" type="reset" class="btn btn-sm btn-danger">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+</body>
+
+</html>

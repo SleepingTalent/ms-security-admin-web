@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>Babcock Security Admin</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet"/>
+
+    <!-- Custom Fonts -->
+    <link th:href="@{css/font-awesome.min.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom CSS -->
+    <link th:href="@{css/sb-admin.css}" rel="stylesheet"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery -->
+    <script th:src="@{js/jquery.js}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <div th:include="navigation :: header-side-nav"></div>
+
+    <div id="page-wrapper">
+
+        <div id="createPermissionsContent" class="container-fluid">
+
+            <!-- Page Heading -->
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        <small>Create Permission</small>
+                    </h1>
+                </div>
+            </div>
+            <!-- /.row -->
+
+            <div class="row">
+                <div class="col-lg-5 input-div">
+
+                        <form id="createPermissionForm" class="form-horizontal" role="form" action="#" th:action="@{/create-permission}" th:object="${permission}" method="post">
+
+                            <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('name')}? has-error">
+                                <label class="control-label col-sm-2" for="name">Name</label>
+                                <div class="col-sm-10">
+                                    <input id="name" class="form-control" th:field="*{name}" placeholder="Enter Name"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group has-error" th:if="${#fields.hasErrors('name')}">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <strong><span id="nameErrorMsg" class="col-sm-12 text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"/></strong>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group-sm" th:classappend="${#fields.hasErrors('description')}? has-error">
+                                <label class="control-label col-sm-2" for="description">Description</label>
+                                <div class="col-sm-10">
+                                    <input id="description" class="form-control" th:field="*{description}" placeholder="Enter Description"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group  has-error" th:if="${#fields.hasErrors('description')}">
+                                <div class="controls col-sm-offset-2 col-sm-10">
+                                    <strong><span id="descriptionErrorMsg" class="col-sm-12 text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"/></strong>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group-sm">
+                                <div class="col-sm-offset-2 col-sm-4">
+                                <button id="createBtn" type="submit" class="btn btn-sm btn-success">Create</button>
+                                <button id="resetBtn" type="reset" class="btn btn-sm btn-danger">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                </div>
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+</body>
+
+</html>

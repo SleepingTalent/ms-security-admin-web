@@ -1,0 +1,52 @@
+info:
+  app:
+    name: security-admin-web
+    description: Security Admin Web
+    version: 1.0.0
+
+server:
+  port: 2322
+  context-path: /security-admin-web
+
+spring:
+  application:
+    name: security-admin-web
+  profiles:
+    active: dev
+  freemarker:
+    enabled: false
+  thymeleaf:
+    enabled: true
+    cache: false
+
+---
+
+spring:
+  profiles: dev
+  cloud:
+    config:
+      uri: http://10.52.180.29/config-service/
+logging:
+  config: classpath:log/logback-dev.xml
+
+---
+
+spring:
+  profiles: qa
+  cloud:
+    config:
+      uri: http://10.52.180.29/config-service/
+logging:
+  config: classpath:log/logback-qa.xml
+
+---
+
+spring:
+  profiles: prod
+  cloud:
+    config:
+      uri: http://10.52.180.29/config-service/
+logging:
+  config: classpath:log/logback-prod.xml
+
+---
