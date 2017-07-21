@@ -1,9 +1,7 @@
 package com.babcock.securityweb.service;
 
-import com.babcock.securityweb.service.proxy.json.UserJson;
-import com.babcock.securityweb.view.model.UserFormModel;
 import com.babcock.securityweb.service.proxy.UserProxy;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.babcock.securityweb.service.proxy.json.UserJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +17,22 @@ public class UserService {
     @Autowired
     UserProxy userProxy;
 
-    @HystrixCommand
+    //@HystrixCommand
     public List<UserJson> getAllUsers() {
         return userProxy.getAllUsers();
     }
 
-    @HystrixCommand
+    //@HystrixCommand
     public String createUser(UserJson user) {
         return userProxy.createUser(user);
     }
 
-    @HystrixCommand
+    //@HystrixCommand
     public void updateUser(UserJson user) {
         userProxy.createUser(user);
     }
 
-    @HystrixCommand
+    //@HystrixCommand
     public UserJson findById(String id) {
         return userProxy.findByUserId(id);
     }

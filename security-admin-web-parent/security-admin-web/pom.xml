@@ -16,8 +16,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<skip.pit.test>true</skip.pit.test>
-		<pit.mutation.threshold>100</pit.mutation.threshold>
+		<skip.pit.test>false</skip.pit.test>
+		<pit.mutation.threshold>1</pit.mutation.threshold>
 
 		<executable.jar.postfix>exec</executable.jar.postfix>
 		<server.jar.name>security-admin-web-${project.parent.version}</server.jar.name>
@@ -215,6 +215,7 @@
 									<directory>${basedir}/target/classes</directory>
 									<includes>
 										<include>*.bat</include>
+										<include>Dockerfile</include>
 									</includes>
 								</resource>
 							</resources>

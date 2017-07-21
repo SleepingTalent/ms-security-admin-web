@@ -1,9 +1,7 @@
 package com.babcock.securityweb.service;
 
-import com.babcock.securityweb.service.proxy.json.PermissionJson;
-import com.babcock.securityweb.view.model.PermissionFormModel;
 import com.babcock.securityweb.service.proxy.PermissionProxy;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.babcock.securityweb.service.proxy.json.PermissionJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +17,22 @@ public class PermissionService {
     @Autowired
     private PermissionProxy permissionProxy;
 
-    @HystrixCommand
+    //@HystrixCommand
     public List<PermissionJson> getAllPermissions() {
         return permissionProxy.getAllPermissions();
     }
 
-    @HystrixCommand
+    //@HystrixCommand
     public String createPermission(PermissionJson permissionFormModel) {
        return permissionProxy.createPermission(permissionFormModel);
     }
 
-    @HystrixCommand
+    //@HystrixCommand
     public void updatePermission(PermissionJson permission) {
         permissionProxy.updatePermission(permission);
     }
 
-    @HystrixCommand
+    //@HystrixCommand
     public PermissionJson findById(String permissionId) {
         return permissionProxy.findByPermissionId(permissionId);
     }

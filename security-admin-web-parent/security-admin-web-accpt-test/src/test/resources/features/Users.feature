@@ -15,6 +15,7 @@ Feature: User Features
     And the createUser form is reset
     Then the createUser form fields are empty
 
+  @wip
   Scenario: CreateUser form creates new user
     Given a user is on the "createUser" page
     When the createUser form details name is set to

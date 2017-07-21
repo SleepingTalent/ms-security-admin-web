@@ -1,0 +1,48 @@
+def pomLocation = "security-admin-web-parent"
+def dockerRepoName = "sleepingtalent/security-admin-web"
+def targetLocation = "security-admin-web-parent/security-admin-web/target"
+def testTargetLocation = "security-admin-web-parent/security-admin-web-accpt-test/target"
+def cucumberReport = "cucumber-report/cucumber-html-reports/cucumber-html-reports"
+
+node {
+  def img
+
+  stage 'Checkout'
+    checkout scm
+
+  stage 'Build Application'
+    try {
+      sh 'mvn -B -V -U -e -f ' + pomLocation + '/pom.xml clean install -Plocal-docker'
+    } finally {
+      junit targetLocation + '/surefire-reports/*.xml'
+
+      publishHTML(target: [
+              allowMissing         : true,
+              alwaysLinkToLastBuild: false,
+              keepAll              : true,
+              reportDir            : targetLocation + '/pit-reports',
+              reportFiles          : 'index.html',
+              reportName           : "security-admin-web pit report"
+      ])
+
+      publishHTML(target: [
+              allowMissing         : true,
+              alwaysLinkToLastBuild: false,
+              keepAll              : true,
+              reportDir            : testTargetLocation + '/' + cucumberReport,
+              reportFiles          : 'overview-features.html',
+              reportName           : "security-admin-web cucumber report"
+      ])
+    }
+
+  stage 'Package Docker Image'
+    img = docker.build(dockerRepoName, targetLocation)
+
+  stage 'Push Docker Image'
+    def pom = readMavenPom file: pomLocation+'/pom.xml'
+    def version = pom.version
+    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        img.push("latest")
+        img.push(version)
+    }
+}

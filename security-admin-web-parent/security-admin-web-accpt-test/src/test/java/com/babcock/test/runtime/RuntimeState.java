@@ -22,6 +22,9 @@ public class RuntimeState {
     private CreateRolePage.FormData roleFormData;
     private CreateUserPage.FormData userFormData;
     private CreateSubjectPage.FormData subjectFormData;
+    private String baseUrl;
+
+    private String uniqueKey;
 
     public Scenario getScenario() {
         return scenario;
@@ -92,5 +95,21 @@ public class RuntimeState {
 
     public CreateSubjectPage.FormData getSubjectFormData() {
         return subjectFormData;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getUniqueKey() {
+        return uniqueKey;
+    }
+
+    public void setUniqueKey(String uniqueKey) {
+        this.uniqueKey = uniqueKey;
     }
 }

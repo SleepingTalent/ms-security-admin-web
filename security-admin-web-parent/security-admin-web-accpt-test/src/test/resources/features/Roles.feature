@@ -15,6 +15,7 @@ Feature: Role Features
     And the createRole form is reset
     Then the createRole form fields are empty
 
+  @wip
   Scenario: CreateRole form creates new role
     Given a user is on the "createRole" page
     When the createRole form data is set to
@@ -23,6 +24,7 @@ Feature: Role Features
     And the createRole form is submitted
     Then the role "createRoleTest" is displayed in the role table
 
+  @wip
   Scenario: CreateRole form creates new role with permissions
     Given a user is on the "createRole" page
     When the createRole form data is set to
@@ -41,6 +43,7 @@ Feature: Role Features
       |drawing:viewer (Drawing View Permission)  |
       |document:viewer (Document View Permission)|
 
+  @wip
   Scenario: CreateRole form edits role permissions
     Given a user is on the "createRole" page
     When the createRole form data is set to
@@ -67,6 +70,7 @@ Feature: Role Features
       |document:viewer (Document View Permission)|
       |drawing:viewer (Drawing View Permission)  |
 
+  @wip
   Scenario: CreateRole form edits role
     Given a user is on the "createRole" page
     When the createRole form data is set to

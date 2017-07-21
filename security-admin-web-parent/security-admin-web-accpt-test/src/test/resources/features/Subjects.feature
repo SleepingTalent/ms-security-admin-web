@@ -15,7 +15,7 @@ Feature: Subjects Features
     And the createSubject form is reset
     Then the createSubject form fields are empty
 
-
+  @wip
   Scenario: CreateSubject form creates new subject
     Given a user is on the "createSubject" page
     When the createSubject form data is set to
@@ -24,6 +24,7 @@ Feature: Subjects Features
     And the createSubject form is submitted
     Then the subject "createSubjectTest" is displayed in the subject table
 
+  @wip
   Scenario: CreateSubject form creates new subject with roles
     Given a user is on the "createSubject" page
     When the createSubject form data is set to
@@ -42,7 +43,7 @@ Feature: Subjects Features
       |documentViewer (Document View Role) |
       |drawingViewer (Drawing View Role)   |
 
-@james
+  @wip
   Scenario: CreateSubject form edits subject roles
     Given a user is on the "createSubject" page
     When the createSubject form data is set to
@@ -69,7 +70,7 @@ Feature: Subjects Features
       |documentViewer (Document View Role) |
       |drawingViewer (Drawing View Role)   |
 
-
+    @wip
     Scenario: CreateSubject form edits subject
       Given a user is on the "createSubject" page
       When the createSubject form data is set to

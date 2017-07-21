@@ -1,9 +1,6 @@
 package com.babcock.test.steps;
 
 import com.babcock.test.helper.rest.RestHelper;
-import com.babcock.test.mock.service.ServiceAdminService;
-import com.babcock.test.mock.service.response.RoleJsonMock;
-import com.babcock.test.mock.service.response.helper.JsonDataHelper;
 import com.babcock.test.helper.selenium.page.subject.AssignSubjectRolesPage;
 import com.babcock.test.helper.selenium.page.subject.CreateSubjectPage;
 import com.babcock.test.helper.selenium.page.subject.EditSubjectPage;
@@ -16,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class SubjectSteps extends AbstractStep {
 
@@ -25,12 +21,6 @@ public class SubjectSteps extends AbstractStep {
 
     @Autowired
     RestHelper restHelper;
-
-    @Autowired
-    ServiceAdminService serviceAdminService;
-
-    @Autowired
-    JsonDataHelper jsonDataHelper;
 
     @Then("^the createSubject form validation messages are displayed$")
     public void theCreateSubjectFormValidationMessagesAreDisplayed() throws Throwable {
@@ -43,16 +33,7 @@ public class SubjectSteps extends AbstractStep {
         String username = runtimeState.getSubjectFormData().getUsername();
         String password = runtimeState.getSubjectFormData().getPassword();
 
-        serviceAdminService.getSubjectApiMock().mockPostCreateSubjectToReturn(username,password);
-        serviceAdminService.getSubjectApiMock().updateGetSubjectsMockToReturn(username,password,"");
-
         runtimeState.getPageFactory().getCreateSubjectPage().clickCreateBtn();
-
-        TimeUnit.SECONDS.sleep(2);
-
-        serviceAdminService.getSubjectApiMock().verifyCreateSubjectCalled(username,password);
-
-
     }
 
     @And("^the createSubject form is reset$")
@@ -77,7 +58,7 @@ public class SubjectSteps extends AbstractStep {
     @When("^the createSubject form data is set to$")
     public void theCreateSubjectFormDataIsSetTo(List<CreateSubjectPage.FormData> formData) throws Throwable {
         CreateSubjectPage.FormData subjectFormData = formData.get(0);
-        runtimeState.getPageFactory().getCreateSubjectPage().setUsernameField(subjectFormData.getUsername());
+        runtimeState.getPageFactory().getCreateSubjectPage().setUsernameField(subjectFormData.getUsername()+"-"+runtimeState.getUniqueKey());
         runtimeState.getPageFactory().getCreateSubjectPage().setPasswordField(subjectFormData.getPassword());
 
         if(subjectFormData.isAssignRole()) {
@@ -91,9 +72,9 @@ public class SubjectSteps extends AbstractStep {
     @Then("^the subject \"([^\"]*)\" is displayed in the subject table$")
     public void theSubjectIsDisplayedInTheSubjectTable(String subject) throws Throwable {
         runtimeState.getPageFactory().getSubjectsPage().assertPageIsDisplayed();
-        runtimeState.getPageFactory().getSubjectsPage().filterTableBy(subject);
+        runtimeState.getPageFactory().getSubjectsPage().filterTableBy(subject+"-"+runtimeState.getUniqueKey());
         runtimeState.takeScreenShot();
-        runtimeState.getPageFactory().getSubjectsPage().findRoleInTable(subject);
+        runtimeState.getPageFactory().getSubjectsPage().findRoleInTable(subject+"-"+runtimeState.getUniqueKey());
     }
 
 
@@ -104,9 +85,6 @@ public class SubjectSteps extends AbstractStep {
 
         for(AssignSubjectRolesPage.FormData roleFormData : formData) {
             runtimeState.getPageFactory().getAssignSubjectRolesPage().assignRole(roleFormData.getRole());
-
-            RoleJsonMock roleJsonMock = jsonDataHelper.findRoleByDisplayName(roleFormData.getRole());
-            assignedRoles.add(roleJsonMock.getId());
             runtimeState.takeScreenShot();
         }
 
@@ -122,10 +100,6 @@ public class SubjectSteps extends AbstractStep {
 
         for(EditSubjectPage.FormData roleFormData : formData) {
             runtimeState.getPageFactory().getEditSubjectPage().assignRole(roleFormData.getRole());
-
-            RoleJsonMock roleByDisplayName = jsonDataHelper.findRoleByDisplayName(roleFormData.getRole());
-            assignedRoles.add(roleByDisplayName.getId());
-
             runtimeState.takeScreenShot();
         }
 
@@ -148,14 +122,7 @@ public class SubjectSteps extends AbstractStep {
         String password = runtimeState.getSubjectFormData().getPassword();
         String roles = runtimeState.getSubjectFormData().getRoles();
 
-        serviceAdminService.getSubjectApiMock().mockPutUpdateSubjectToReturnSuccess();
-        serviceAdminService.getSubjectApiMock().updateGetSubjectsMockToReturn(username,password,roles);
-
         runtimeState.getPageFactory().getAssignSubjectRolesPage().clickAssignBtn();
-
-        TimeUnit.SECONDS.sleep(2);
-
-        serviceAdminService.getSubjectApiMock().verifyUpdateSubjectCalled(username,password,roles);
     }
 
     @And("^subject is displayed with the assigned roles$")
@@ -175,9 +142,6 @@ public class SubjectSteps extends AbstractStep {
         runtimeState.getPageFactory().getSubjectsPage().findRoleInTable(subject);
         runtimeState.takeScreenShot();
 
-        serviceAdminService.getSubjectApiMock().mockGetFindSubjectByIdToReturn(runtimeState.getSubjectFormData().getUsername(),
-                runtimeState.getSubjectFormData().getPassword(),runtimeState.getSubjectFormData().getRoles());
-
         runtimeState.getPageFactory().getSubjectsPage().clickOnEditLink();
     }
 
@@ -187,14 +151,7 @@ public class SubjectSteps extends AbstractStep {
         String password = runtimeState.getSubjectFormData().getPassword();
         String roles = runtimeState.getSubjectFormData().getRoles();
 
-        serviceAdminService.getSubjectApiMock().mockPutUpdateSubjectToReturnSuccess();
-        serviceAdminService.getSubjectApiMock().updateGetSubjectsMockToReturn(username,password,roles);
-
         runtimeState.getPageFactory().getEditSubjectPage().clickUpdateBtn();
-
-        TimeUnit.SECONDS.sleep(2);
-
-        serviceAdminService.getSubjectApiMock().verifyUpdateSubjectCalled(username,roles);
     }
 
     @And("^subject details is edited to$")

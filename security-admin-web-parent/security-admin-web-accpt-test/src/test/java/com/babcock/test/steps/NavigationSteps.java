@@ -17,7 +17,7 @@ public class NavigationSteps extends AbstractStep {
 
     @Given("^a user is on the \"([^\"]*)\" page$")
     public void aUserIsOnThePage(String pageName) throws Throwable {
-        runtimeState.getPageFactory().getPage(pageName).navigateToPage(getBaseUrl());
+        runtimeState.getPageFactory().getPage(pageName).navigateToPage(runtimeState.getBaseUrl());
 
         runtimeState.takeScreenShot();
         runtimeState.getPageFactory().getPage(pageName).assertPageIsDisplayed();

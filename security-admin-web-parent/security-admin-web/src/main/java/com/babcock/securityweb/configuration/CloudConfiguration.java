@@ -11,8 +11,6 @@ import org.springframework.security.oauth2.client.token.grant.client.ClientCrede
 @Configuration
 @EnableDiscoveryClient
 @EnableCircuitBreaker
-//@EnableResourceServer
-@Profile({"dev","qa","prod"})
 @ComponentScan("com.babcock.securityweb")
 @Import({SwaggerConfiguration.class})
 public class CloudConfiguration {

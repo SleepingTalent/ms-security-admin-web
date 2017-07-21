@@ -26,19 +26,32 @@ public final class WebDriverFactory {
 
             switch (browserType) {
                 case FIREFOX:
-                    setDriverLocation("webdriver.gecko.driver","webdriver/geckodriver.exe");
+
+                    if(System.getProperty("os.name").contains("Windows")) {
+                        setDriverLocation("webdriver.gecko.driver","webdriver/geckodriver.exe");
+                    }else {
+                        setDriverLocation("webdriver.gecko.driver","webdriver/geckodriver");
+                    }
+
                     webDriver = new FirefoxCucumberWebDriver();
                     break;
                 case PHANTOM:
                     webDriver = new PhantomCucumberWebDriver();
                     break;
                 case CHROME:
-                    setDriverLocation("webdriver.chrome.driver","webdriver/chromedriver.exe");
+
+                    if(System.getProperty("os.name").contains("Windows")) {
+                        setDriverLocation("webdriver.chrome.driver","webdriver/chromedriver.exe");
+                    }else {
+                        setDriverLocation("webdriver.chrome.driver","webdriver/chromedriver");
+                    }
+
                     webDriver = new ChromeCucumberWebDriver();
+                    break;
             }
 
             webDriver.getWindowHandle();
-            webDriver.manage().window().maximize();
+//            webDriver.manage().window().maximize();
             webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
         return webDriver;

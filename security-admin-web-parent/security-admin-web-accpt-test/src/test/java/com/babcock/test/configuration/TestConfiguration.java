@@ -1,12 +1,11 @@
 package com.babcock.test.configuration;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@Profile("test")
+@ComponentScan(value = {"com.babcock.test"})
+@PropertySource("test.properties")
 public class TestConfiguration {
 
     @Bean

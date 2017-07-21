@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -53,6 +54,25 @@ public abstract class Page {
                 element.clear();
                 element.sendKeys(value);
                 found = true;
+            }
+        }
+
+        //Hacky Sleep then retry table filter
+        if(!found) {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            elementList =  getPageHelper().findElementsByClass("input-sm");
+
+            for(WebElement element: elementList) {
+                if(element.getTagName().equals("input")) {
+                    element.clear();
+                    element.sendKeys(value);
+                    found = true;
+                }
             }
         }
 

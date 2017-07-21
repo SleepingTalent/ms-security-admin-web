@@ -1,7 +1,6 @@
 package com.babcock.test.steps;
 
 import com.babcock.test.helper.rest.RestHelper;
-import com.babcock.test.mock.service.ServiceAdminService;
 import com.babcock.test.helper.selenium.page.permission.CreatePermissionPage;
 import com.babcock.test.runtime.RuntimeState;
 import cucumber.api.java.en.And;
@@ -10,7 +9,6 @@ import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class PermissionSteps extends AbstractStep {
 
@@ -20,26 +18,10 @@ public class PermissionSteps extends AbstractStep {
     @Autowired
     RestHelper restHelper;
 
-    @Autowired
-    ServiceAdminService serviceAdminService;
 
     @When("^the createPermission form is submitted$")
     public void theCreatePermissionFormIsSubmitted() throws Throwable {
-
-        serviceAdminService.getPermissionApiMock().mockPostCreatePermissionToReturn(runtimeState.getPermissionFormData().getName(),
-                runtimeState.getPermissionFormData().getDescription());
-
-        serviceAdminService.getPermissionApiMock().updateGetPermissionsMockToReturn(
-                runtimeState.getPermissionFormData().getName(),
-                runtimeState.getPermissionFormData().getDescription());
-
         runtimeState.getPageFactory().getCreatePermissionPage().clickCreateBtn();
-
-        TimeUnit.SECONDS.sleep(2);
-
-        serviceAdminService.getPermissionApiMock().verifyCreatePermissionCalled(
-                runtimeState.getPermissionFormData().getName(),
-                runtimeState.getPermissionFormData().getDescription());
     }
 
     @And("^the createPermission empty form is submitted$")
@@ -68,7 +50,7 @@ public class PermissionSteps extends AbstractStep {
     @When("^the createPermission form data is set to$")
     public void theCreatePermissionFormDataIsSetTo(List<CreatePermissionPage.FormData> formData) throws Throwable {
         CreatePermissionPage.FormData permissionFormData = formData.get(0);
-        runtimeState.getPageFactory().getCreatePermissionPage().setNameField(permissionFormData.getName());
+        runtimeState.getPageFactory().getCreatePermissionPage().setNameField(permissionFormData.getName()+"-"+runtimeState.getUniqueKey());
         runtimeState.getPageFactory().getCreatePermissionPage().setDescriptionField(permissionFormData.getDescription());
 
         runtimeState.setPermissionFormData(permissionFormData);
@@ -84,9 +66,9 @@ public class PermissionSteps extends AbstractStep {
 
     @Then("^the permission \"([^\"]*)\" is displayed in the permissions table$")
     public void thePermissionIsDisplayedInThePermissionsTable(String permission) throws Throwable {
-        runtimeState.getPageFactory().getPermissionsPage().filterTableBy(permission);
+        runtimeState.getPageFactory().getPermissionsPage().filterTableBy(permission+"-"+runtimeState.getUniqueKey());
         runtimeState.takeScreenShot();
-        runtimeState.getPageFactory().getPermissionsPage().findPermissionInTable(permission);
+        runtimeState.getPageFactory().getPermissionsPage().findPermissionInTable(permission+"-"+runtimeState.getUniqueKey());
     }
 }
 

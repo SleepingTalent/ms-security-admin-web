@@ -20,7 +20,11 @@ public class PageHelper {
     }
 
     public WebElement findElementById(String id) {
-        return findElementById(id,false);
+        try {
+            return findElementById(id, true);
+        }catch (SeleniumTimeoutException ste) {
+            return findElementById(id, false);
+        }
     }
 
     public WebElement findElementById(String id,boolean reThrow) {
@@ -31,8 +35,12 @@ public class PageHelper {
         return elementHelper.findByIdAndClass(id,className,reThrow);
     }
 
+    public WebElement findElementByClass(String className, boolean reThrow) {
+        return elementHelper.findElementByClass(className, reThrow);
+    }
+
     public WebElement findElementByClass(String className) {
-        return elementHelper.findElementByClass(className, false);
+        return findElementByClass(className, false);
     }
 
     public List<WebElement> findElementsByClass(String className) {
@@ -113,7 +121,16 @@ public class PageHelper {
     public void selectDualListElement(String text) {
 
         findOptionWithText(text).click();
-        findElementByClass("move").click();
+
+        try {
+            findElementByClass("move",true).click();
+        }catch (SeleniumTimeoutException ex) {
+            try {
+                findElementByClass("move",true).click();
+            }catch (SeleniumTimeoutException nex) {
+                findElementByClass("move").click();
+            }
+        }
 
 //        WebElement option = getPageHelper().findOptionWithText(permission);
 //        Actions optionAction = new Actions(getWebDriver());

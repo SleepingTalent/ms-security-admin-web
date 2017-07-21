@@ -13,7 +13,7 @@ import static org.junit.Assert.fail;
 
 public class ElementHelper {
 
-    private static final long WAIT_TIME = 20;
+    private static final long WAIT_TIME = 30;
 
     CucumberWebDriver driver;
 

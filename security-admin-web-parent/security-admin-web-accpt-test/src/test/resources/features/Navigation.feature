@@ -1,4 +1,5 @@
 @navigation
+@wip
 Feature: Navigation Features
 
   @navigationPanel

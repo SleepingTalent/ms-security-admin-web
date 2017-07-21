@@ -1,7 +1,6 @@
 package com.babcock.test.steps;
 
 import com.babcock.test.helper.rest.RestHelper;
-import com.babcock.test.mock.service.ServiceAdminService;
 import com.babcock.test.helper.selenium.page.user.CreateUserPage;
 import com.babcock.test.runtime.RuntimeState;
 import cucumber.api.java.en.And;
@@ -10,7 +9,6 @@ import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class UserSteps extends AbstractStep {
 
@@ -20,39 +18,10 @@ public class UserSteps extends AbstractStep {
     @Autowired
     RestHelper restHelper;
 
-    @Autowired
-    ServiceAdminService serviceAdminService;
 
     @And("^the createUser form is submitted$")
     public void theCreateUserFormIsSubmitted() throws Throwable {
-        serviceAdminService.getUserApiMock().mockPostCreateUserToReturn(
-                runtimeState.getUserFormData().getPayNumber(),
-                runtimeState.getUserFormData().getName(),
-                runtimeState.getUserFormData().getEmail(),
-                runtimeState.getUserFormData().getJobTitle(),
-                runtimeState.getUserFormData().getDepartment(),
-                runtimeState.getUserFormData().getLocation());
-
-
-        serviceAdminService.getUserApiMock().updateGetUsersMockToReturn(
-                runtimeState.getUserFormData().getPayNumber(),
-                runtimeState.getUserFormData().getName(),
-                runtimeState.getUserFormData().getEmail(),
-                runtimeState.getUserFormData().getJobTitle(),
-                runtimeState.getUserFormData().getDepartment(),
-                runtimeState.getUserFormData().getLocation());
-
         runtimeState.getPageFactory().getCreateUserPage().clickCreateBtn();
-
-        TimeUnit.SECONDS.sleep(2);
-
-        serviceAdminService.getUserApiMock().verifyCreateUserCalled(
-                runtimeState.getUserFormData().getPayNumber(),
-                runtimeState.getUserFormData().getName(),
-                runtimeState.getUserFormData().getEmail(),
-                runtimeState.getUserFormData().getJobTitle(),
-                runtimeState.getUserFormData().getDepartment(),
-                runtimeState.getUserFormData().getLocation());
     }
 
     @And("^the createUser form is reset$")
@@ -62,9 +31,9 @@ public class UserSteps extends AbstractStep {
 
     @Then("^the user \"([^\"]*)\" is displayed in the users table$")
     public void theUserIsDisplayedInTheUsersTable(String user) throws Throwable {
-        runtimeState.getPageFactory().getUsersPage().filterTableBy(user);
+        runtimeState.getPageFactory().getUsersPage().filterTableBy(user+"-"+runtimeState.getUniqueKey());
         runtimeState.takeScreenShot();
-        runtimeState.getPageFactory().getUsersPage().findUserInTable(user);
+        runtimeState.getPageFactory().getUsersPage().findUserInTable(user+"-"+runtimeState.getUniqueKey());
     }
 
     @Then("^the createUser form validation messages are displayed$")
@@ -87,9 +56,9 @@ public class UserSteps extends AbstractStep {
     public void theCreateUserFormDetailsNameIsSetTo(List<CreateUserPage.FormData> formData) throws Throwable {
         CreateUserPage.FormData userFormData = formData.get(0);
 
-        runtimeState.getPageFactory().getCreateUserPage().setPayNumberField(userFormData.getPayNumber());
-        runtimeState.getPageFactory().getCreateUserPage().setNameField(userFormData.getName());
-        runtimeState.getPageFactory().getCreateUserPage().setEmailField(userFormData.getEmail());
+        runtimeState.getPageFactory().getCreateUserPage().setPayNumberField(userFormData.getPayNumber()+"-"+runtimeState.getUniqueKey());
+        runtimeState.getPageFactory().getCreateUserPage().setNameField(userFormData.getName()+"-"+runtimeState.getUniqueKey());
+        runtimeState.getPageFactory().getCreateUserPage().setEmailField(runtimeState.getUniqueKey()+"-"+userFormData.getEmail());
         runtimeState.getPageFactory().getCreateUserPage().setJobTitleField(userFormData.getJobTitle());
         runtimeState.getPageFactory().getCreateUserPage().setDepartmentField(userFormData.getDepartment());
         runtimeState.getPageFactory().getCreateUserPage().setLocationField(userFormData.getLocation());

@@ -1,9 +1,6 @@
 package com.babcock.test.steps;
 
 import com.babcock.test.helper.rest.RestHelper;
-import com.babcock.test.mock.service.ServiceAdminService;
-import com.babcock.test.mock.service.response.PermissionJsonMock;
-import com.babcock.test.mock.service.response.helper.JsonDataHelper;
 import com.babcock.test.helper.selenium.page.role.AssignRolePermissionsPage;
 import com.babcock.test.helper.selenium.page.role.CreateRolePage;
 import com.babcock.test.helper.selenium.page.role.EditRolePage;
@@ -18,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class RoleSteps extends AbstractStep {
 
@@ -30,26 +26,10 @@ public class RoleSteps extends AbstractStep {
     @Autowired
     RestHelper restHelper;
 
-    @Autowired
-    ServiceAdminService serviceAdminService;
-
-    @Autowired
-    JsonDataHelper jsonDataHelper;
-
     @And("^the createRole form is submitted$")
     public void theCreateRoleFormIsSubmitted() throws Throwable {
-
-        String name = runtimeState.getRoleFormData().getName();
-        String description = runtimeState.getRoleFormData().getDescription();
-
-        serviceAdminService.getRoleApiMock().mockPostCreateRoleToReturn(name,description);
-        serviceAdminService.getRoleApiMock().updateGetRolesMockToReturn(name,description,"");
-
         runtimeState.getPageFactory().getCreateRolePage().clickCreateBtn();
 
-        TimeUnit.SECONDS.sleep(2);
-
-        serviceAdminService.getRoleApiMock().verifyCreateRoleCalled(name,description);
     }
 
     @And("^the createRole empty form is submitted$")
@@ -72,8 +52,8 @@ public class RoleSteps extends AbstractStep {
     @Then("^the role \"([^\"]*)\" is displayed in the role table$")
     public void theRoleIsDisplayedInTheRoleTable(String role) throws Throwable {
         runtimeState.getPageFactory().getRolesPage().assertPageIsDisplayed();
-        runtimeState.getPageFactory().getRolesPage().filterTableBy(role);
-        runtimeState.getPageFactory().getRolesPage().findRoleInTable(role);
+        runtimeState.getPageFactory().getRolesPage().filterTableBy(role+"-"+runtimeState.getUniqueKey());
+        runtimeState.getPageFactory().getRolesPage().findRoleInTable(role+"-"+runtimeState.getUniqueKey());
         runtimeState.takeScreenShot();
     }
 
@@ -83,9 +63,6 @@ public class RoleSteps extends AbstractStep {
         runtimeState.getPageFactory().getRolesPage().filterTableBy(role);
         runtimeState.getPageFactory().getRolesPage().findRoleInTable(role);
         runtimeState.takeScreenShot();
-
-        serviceAdminService.getRoleApiMock().mockGetFindRoleByIdToReturn(runtimeState.getRoleFormData().getName(),
-                runtimeState.getRoleFormData().getDescription(),runtimeState.getRoleFormData().getPermissions());
 
         runtimeState.getPageFactory().getRolesPage().clickOnEditLink();
     }
@@ -107,7 +84,7 @@ public class RoleSteps extends AbstractStep {
     public void theCreateRolenFormDataIsSetTo(List<CreateRolePage.FormData> formData) throws Throwable {
         CreateRolePage.FormData roleFormData = formData.get(0);
 
-        runtimeState.getPageFactory().getCreateRolePage().setNameField(roleFormData.getName());
+        runtimeState.getPageFactory().getCreateRolePage().setNameField(roleFormData.getName()+"-"+runtimeState.getUniqueKey());
         runtimeState.getPageFactory().getCreateRolePage().setDescriptionField(roleFormData.getDescription());
 
         if(roleFormData.isAssignPermission()) {
@@ -125,14 +102,7 @@ public class RoleSteps extends AbstractStep {
         String description = runtimeState.getRoleFormData().getDescription();
         String permissions = runtimeState.getRoleFormData().getPermissions();
 
-        serviceAdminService.getRoleApiMock().mockPutUpdateRoleToReturnSuccess();
-        serviceAdminService.getRoleApiMock().updateGetRolesMockToReturn(name,description,permissions);
-
         runtimeState.getPageFactory().getAssignRolePermissionsPage().clickAssignBtn();
-
-        TimeUnit.SECONDS.sleep(2);
-
-        serviceAdminService.getRoleApiMock().verifyUpdateRoleCalled(name,description,permissions);
     }
 
     @And("^the following permissions are assigned$")
@@ -143,9 +113,6 @@ public class RoleSteps extends AbstractStep {
         for(AssignRolePermissionsPage.FormData permissionFormData : formData) {
             runtimeState.getPageFactory().getAssignRolePermissionsPage().assignPermission(permissionFormData.getPermission());
             logger.info("Assigned Permission :"+permissionFormData.getPermission());
-
-            PermissionJsonMock permissionJsonMock = jsonDataHelper.findPermissionByDisplayName(permissionFormData.getPermission());
-            assignedPermissions.add(permissionJsonMock.getId());
 
             runtimeState.takeScreenShot();
         }
@@ -162,9 +129,6 @@ public class RoleSteps extends AbstractStep {
 
         for(EditRolePage.FormData roleFormData : formData) {
             runtimeState.getPageFactory().getEditRolePage().assignPermission(roleFormData.getPermission());
-
-            PermissionJsonMock permissionJsonMock = jsonDataHelper.findPermissionByDisplayName(roleFormData.getPermission());
-            assignedPermissions.add(permissionJsonMock.getId());
 
             runtimeState.takeScreenShot();
         }
@@ -203,14 +167,7 @@ public class RoleSteps extends AbstractStep {
         String description = runtimeState.getRoleFormData().getDescription();
         String permissions = runtimeState.getRoleFormData().getPermissions();
 
-        serviceAdminService.getRoleApiMock().mockPutUpdateRoleToReturnSuccess();
-        serviceAdminService.getRoleApiMock().updateGetRolesMockToReturn(name,description,permissions);
-
         runtimeState.getPageFactory().getEditRolePage().clickUpdateBtn();
-
-        TimeUnit.SECONDS.sleep(2);
-
-        serviceAdminService.getRoleApiMock().verifyUpdateRoleCalled(name,description,permissions);
     }
 
     @And("^role is displayed with the assigned permissions$")
